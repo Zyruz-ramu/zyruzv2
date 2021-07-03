@@ -22,17 +22,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 from pyrogram import filters
-from pyrogram.types import (CallbackQuery, InlineKeyboardButton,
-                            InlineKeyboardMarkup, Message)
+from pyrogram.types import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+)
 
 from wbb import LOG_GROUP_ID, SUDOERS, app, app2, arq, USERBOT_PREFIX
 from wbb.core.decorators.permissions import adminsOnly
 from wbb.modules.admin import list_admins, member_permissions
 from wbb.modules.trust import get_spam_data
 from wbb.modules.userbot import edit_or_reply
-from wbb.utils.dbfunctions import (is_spam_detection_on,
-                                   spam_detection_off,
-                                   spam_detection_on)
+from wbb.utils.dbfunctions import (
+    is_spam_detection_on,
+    spam_detection_off,
+    spam_detection_on,
+)
 from wbb.utils.filter_groups import spam_protection_group
 
 __MODULE__ = "Anti-Spam"
@@ -91,9 +97,7 @@ async def spam_protection_func(_, message: Message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(
-                    text="Yes it's spam", callback_data="s_p_spam"
-                ),
+                InlineKeyboardButton(text="Yes it's spam", callback_data="s_p_spam"),
                 InlineKeyboardButton(
                     text="No, it's not spam",
                     callback_data="s_p_ham",
@@ -142,7 +146,9 @@ async def spam_p_callback(_, cq: CallbackQuery):
         await cq.message.edit(text)
         if cq.message.reply_to_message:
             text = f"**ADMINS OF {chat_id} FLAGGED THIS MESSAGE AS SPAM**\n\n"
-            text += f"`{cq.message.reply_to_message.text.markdown}`\n\n__{dev_forward}__"
+            text += (
+                f"`{cq.message.reply_to_message.text.markdown}`\n\n__{dev_forward}__"
+            )
             return await app.send_message(
                 LOG_GROUP_ID, text, disable_web_page_preview=True
             )
@@ -152,29 +158,21 @@ async def spam_p_callback(_, cq: CallbackQuery):
     if cq.message.reply_to_message:
         text = f"**ADMINS OF {chat_id} FLAGGED THIS MESSAGE AS NOT SPAM**\n\n"
         text += f"`{cq.message.reply_to_message.text.markdown}`\n\n__{dev_forward}__"
-        return await app.send_message(
-            LOG_GROUP_ID, text, disable_web_page_preview=True
-        )
+        return await app.send_message(LOG_GROUP_ID, text, disable_web_page_preview=True)
 
 
 @app.on_message(filters.command("spam") & ~filters.private)
 async def spam_flag_func(_, message: Message):
     if not message.reply_to_message:
-        return await message.reply_text(
-            "Reply to a message to flag it as spam"
-        )
+        return await message.reply_text("Reply to a message to flag it as spam")
 
     r = message.reply_to_message
     if not r.text and not r.caption:
-        return await message.reply_text(
-            "Reply to a text message to flag it as spam"
-        )
+        return await message.reply_text("Reply to a text message to flag it as spam")
 
     text = r.text or r.caption
     if not text:
-        return await message.reply_text(
-            "Reply to a text message to flag it as spam"
-        )
+        return await message.reply_text("Reply to a text message to flag it as spam")
 
     msg = f"""
 **ADMINS OF {message.chat.id} FLAGGED THIS MESSAGE AS SPAM. [Suggestion]**
@@ -188,18 +186,14 @@ __{dev_forward}__
     await message.reply_text(
         "Message was flagged as spam, Devs will use it to improve spam protection algorithm."
     )
-    await app.send_message(
-        LOG_GROUP_ID, msg, disable_web_page_preview=True
-    )
+    await app.send_message(LOG_GROUP_ID, msg, disable_web_page_preview=True)
 
 
 @app.on_message(filters.command("spam_detection") & ~filters.private)
 @adminsOnly("can_change_info")
 async def spam_toggle(_, message: Message):
     if len(message.command) != 2:
-        return await message.reply_text(
-            "Usage: /spam_detection [ENABLE|DISABLE]"
-        )
+        return await message.reply_text("Usage: /spam_detection [ENABLE|DISABLE]")
     status = message.text.split(None, 1)[1].strip()
     status = status.lower()
     chat_id = message.chat.id
@@ -210,19 +204,20 @@ async def spam_toggle(_, message: Message):
         await spam_detection_off(chat_id)
         await message.reply_text("Disabled Spam Detection System.")
     else:
-        await message.reply_text(
-            "Unknown Suffix, Use /spam_detection [ENABLE|DISABLE]"
-        )
+        await message.reply_text("Unknown Suffix, Use /spam_detection [ENABLE|DISABLE]")
+
 
 @app.on_message(filters.command("spam_scan"))
-@app2.on_message(filters.command("spam_scan", prefixes=USERBOT_PREFIX) & filters.user(SUDOERS))
+@app2.on_message(
+    filters.command("spam_scan", prefixes=USERBOT_PREFIX) & filters.user(SUDOERS)
+)
 async def scanNLP(_, message: Message):
     if not message.reply_to_message:
         return await edit_or_reply(message, text="Reply to a message to scan it.")
     r = message.reply_to_message
     text = r.text or r.caption
     if not text:
-       return await edit_or_reply(message, text="Can't scan that")
+        return await edit_or_reply(message, text="Can't scan that")
     data = await arq.nlp(text)
     data = data.result[0]
     msg = f"""
