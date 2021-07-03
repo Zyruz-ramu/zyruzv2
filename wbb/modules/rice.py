@@ -35,7 +35,7 @@ from wbb.utils.dbfunctions import (is_spam_detection_on,
                                    spam_detection_on)
 from wbb.utils.filter_groups import spam_protection_group
 
-__MODULE__ = "AntiSpam"
+__MODULE__ = "Anti-Spam"
 __HELP__ = """
 **Antispam helps protect your group from spam.**
 
