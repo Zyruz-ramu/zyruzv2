@@ -24,6 +24,8 @@ SOFTWARE.
 import asyncio
 import importlib
 import re
+import random
+
 
 import uvloop
 from pyrogram import filters, idle
@@ -109,21 +111,21 @@ async def help_command(_, message):
             [
                 [
                     InlineKeyboardButton(
-                        text="Help ❓",
+                        text="[► Help ◄]",
                         url=f"t.me/{BOT_USERNAME}?start=help",
                     ),
                     InlineKeyboardButton(
-                        text="Repo 🛠",
-                        url="https://github.com/thehamkercat/WilliamButcherBot",
+                        text="✫ Author ✫",
+                        url="https://UserLazy.github.io/UserLazy",
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        text="System Stats 💻",
+                        text="System Stats ",
                         callback_data="stats_callback",
                     ),
                     InlineKeyboardButton(
-                        text="Support 👨", url="t.me/WBBSupport"
+                        text="✯ Anime Group ✯", url="t.me/Grup_Anime_Chat"
                     ),
                 ],
             ]
@@ -136,20 +138,20 @@ async def help_command(_, message):
         [
             [
                 InlineKeyboardButton(
-                    text="Commands ❓", callback_data="bot_commands"
+                    text="[► Help ◄]", callback_data="bot_commands"
                 ),
                 InlineKeyboardButton(
-                    text="Repo 🛠",
-                    url="https://github.com/thehamkercat/WilliamButcherBot",
+                    text="✫ Source Code ✫",
+                    url="https://github.com/UserLazy/OdaNobunaga",
                 ),
             ],
             [
                 InlineKeyboardButton(
-                    text="System Stats 🖥",
+                    text="System Stats ",
                     callback_data="stats_callback",
                 ),
                 InlineKeyboardButton(
-                    text="Support 👨", url="t.me/WBBSupport"
+                    text="✯ Anime Group ✯", url="t.me/Grup_Anime_Chat"
                 ),
             ],
             [
@@ -160,6 +162,20 @@ async def help_command(_, message):
             ],
         ]
     )
+STICKERS = (
+        "CAACAgEAAxkDAAEE5zBgzpDoaKGN_MxWotYtWkpb1ifgMgACXAADni6oMXCx-PB6sonJHgQ",
+        "CAACAgEAAxkDAAEE5zFgzpFDFp_0V9vi-r5ZnKaOUDCVkAACVQADni6oMROiUdEEyPN8HgQ",
+        "CAACAgEAAxkDAAEE5zJgzpFxlslQcP9Xdjsvqb2oqkZrxQACeAADni6oMQhcS_oH6wPjHgQ",
+        "CAACAgEAAxkDAAEE5zNgzpGbRbc_ecGW1qIk2qojT0yTmgACdwADni6oMd2k3jP94wO6HgQ",
+        "CAACAgEAAxkDAAEE5zZgzpG9wHOrBm-X_gNGWlUSGXkEMQACWAADni6oMe7FeddXzDLoHgQ",
+        "CAACAgUAAx0CRI6ivgAC1qVg2iEgaRvIKr9auH4VGEalNK8UGAACAQMAAvEAAdBWNmr7bsO-rvseBA",
+        "CAACAgUAAx0CRI6ivgAC1rFg2iIT1mcmXTV1TZvM2WaA0tmKuAACRAMAAmpP0Fb1Txeqb6b0AR4E",
+        "CAACAgUAAx0CRI6ivgAC1rpg2iJ0UnLFLvWLw86DTatSLyKnvgAChwMAAlf90VYju1kc0R0pdB4E",
+        "CAACAgUAAx0CRI6ivgAC1sJg2iLnlFEKWs07Jw-ws784R01FTwACrQIAAlhx0FaXbV8XMcrAWx4E",
+        "CAACAgUAAx0CRI6ivgAC1sxg2iNwFjooHU0PjKL48FdVRw_NIwACyAMAAoyf0FaMuLOiawABEEceBA",
+        "CAACAgUAAx0CRI6ivgAC1tRg2iPn9I5BtWpa_dL0kq7b4qvd-AAC-QIAArxX0VbSgHcf_OyMMB4E",
+    )
+    await message.reply_sticker(random.choice(STICKERS))
     await message.reply(
         f"Hey there! My name is {BOT_NAME}. I can manage your group with lots of useful features, feel free to add me to your group.",
         reply_markup=keyboard,
@@ -174,6 +190,9 @@ async def help_parser(name, keyboard=None):
     return (
         """Hello {first_name}! My name is {bot_name}!
 I'm a group management bot with some usefule features.
+═════════════════════════════
+Maintained By @RxyMX
+═════════════════════════════
 You can choose an option below, by clicking a button.
 Also you can ask anything in Support Group.
 
@@ -240,9 +259,11 @@ General command are:
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
+                        InlineKeyboardButton("≪back", callback_data="help_back"),
                         InlineKeyboardButton(
-                            "back", callback_data="help_back"
-                        )
+                            text="OdaXMusic Repo≫",
+                            url="https://github.com/UserLazy/Oda_Music",
+                        ),
                     ]
                 ]
             ),
